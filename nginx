@@ -1,0 +1,71 @@
+server {
+    listen 8080 default_server;
+    listen [::]:8080 default_server;
+    server_name php.streamxerosradio.duckdns.org;
+
+    # Prevent accidental file exposure
+    server_tokens off;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; object-src 'none';" always;
+
+    # Disable sendfile for PHP apps (prevents weird caching)
+    sendfile off;
+    tcp_nodelay on;
+    keepalive_timeout 15;
+    client_max_body_size 10M;
+
+    root /var/www/html;
+    index index.php index.html;
+
+    # Main location
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    # Error pages
+    error_page 404 /index.php;
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+
+    # PHP-FPM handling
+    location ~ \.php$ {
+        try_files $uri =404;
+        include fastcgi_params;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/run/php/php-fpm.sock;  # Make sure this matches your PHP version (e.g., php8.2-fpm.sock)
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    # Deny . files (.git, .env, etc.)
+    location ~ /\. {
+        deny all;
+        log_not_found off;
+    }
+
+    # Asset caching
+    location ~* \.(?:jpg|jpeg|gif|png|webp|css|js|ico|xml|svg|woff2?|ttf|eot|otf)$ {
+        expires 5d;
+        access_log off;
+        add_header Cache-Control "public";
+    }
+
+    # FPM status/ping for localhost only
+    location ~ ^/(fpm-status|fpm-ping)$ {
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+        include fastcgi_params;
+        fastcgi_pass unix:/run/php/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    # Disable access to backup/config files
+    location ~* \.(bak|config|sql|fla|psd|ini|log|sh|swp|dist)$ {
+        deny all;
+    }
+}
