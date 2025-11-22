@@ -1,0 +1,151 @@
+/* Algemene stijlen */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(173, 216, 230, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: lightblue;
+    padding: 20px;
+    width: 100%;
+}
+
+.navbar img {
+    width: 120px; /* Aangepaste grootte */
+    height: auto;
+}
+
+/* Dashboard styling */
+.dashboard {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    padding: 20px;
+    max-width: 1000px;
+    width: 100%;
+    flex: 1; /* Zorgt ervoor dat de dashboard het grootste deel van de hoogte inneemt */
+}
+
+.dashboard-item {
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transform: translateY(100px);
+    opacity: 0;
+    animation: slideUp 0.6s ease forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.dashboard-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.dashboard-item-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.dashboard-item h3 {
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+.dashboard-item p {
+    font-size: 14px;
+    color: #666;
+}
+
+.use-button {
+    margin-top: 15px;
+    background-color: lightblue;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.use-button:hover {
+    background-color: deepskyblue;
+}
+
+/* Hover effect */
+.dashboard-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    background-color: lightblue;
+    padding: 10px;
+    width: 100%;
+    font-weight: 800;
+}
+
+/* Zorgen dat footer altijd onderaan blijft */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.dashboard {
+    flex: 1;
+}
+
+/* Updated cookies banner animation */
+.cookies-consent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-family: 'Montserrat', sans-serif;
+    display: none;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 1s ease forwards;
+}
+
+.cookies-content {
+    display: inline-block;
+}
+
+.accept-btn {
+    background-color: lightblue;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+}        
