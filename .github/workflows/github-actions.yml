@@ -21,30 +21,55 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Babel dependencies
+      - name: Install tools
         run: |
-          npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/preset-react
+          npm install --save-dev @babel/core @babel/cli @babel/preset-env terser lightningcss-cli
 
       - name: Create Babel config
         run: |
           echo '{
-            "presets": ["@babel/preset-env", "@babel/preset-react"]
+            "presets": [["@babel/preset-env", { "targets": "defaults" }]]
           }' > babel.config.json
 
-      - name: Auto Minify
-        uses: nizarmah/auto-minify@v3.0.0
-        with:
-          directory: ./assets
-          output: ./dist/minified
-          overwrite: false
-          maxdepth: 3
-          js_engine: babel
-          css_engine: lightning
+      ########################################################
+      # JS MINIFY (.min.js)
+      ########################################################
+
+      - name: Transpile JS (Babel)
+        run: |
+          mkdir -p dist/temp-js
+          mkdir -p dist/minified
+          npx babel assets --out-dir dist/temp-js --extensions ".js"
+
+      - name: Minify JS (Terser)
+        run: |
+          for file in dist/temp-js/**/*.js; do
+            base=$(basename "$file" .js)
+            out="dist/minified/${base}.min.js"
+            npx terser "$file" -o "$out" --compress --mangle
+          done
+          rm -rf dist/temp-js
+
+      ########################################################
+      # CSS MINIFY (.min.css)
+      ########################################################
+
+      - name: Minify CSS (Lightning CSS)
+        run: |
+          find assets -name "*.css" | while read file; do
+            base=$(basename "$file" .css)
+            out="dist/minified/${base}.min.css"
+            npx lightningcss --minify "$file" -o "$out"
+          done
+
+      ########################################################
+      # Commit
+      ########################################################
 
       - name: Commit and Push Minified Files
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add dist/minified
-          git commit -m "Auto-minified files"
+          git commit -m "Auto-minified JS & CSS" || echo "No changes"
           git push
