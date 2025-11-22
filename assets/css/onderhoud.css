@@ -1,0 +1,139 @@
+/* Algemene stijlen */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(173, 216, 230, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.container {
+    background-color: white;
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideUp 1s forwards;
+}
+
+.navbar img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+}
+
+.icon {
+    width: 80px;
+    height: auto;
+    margin-bottom: 20px;
+    animation: flashRed 2s infinite alternate;
+}
+
+p {
+    font-size: 18px;
+    color: #666;
+    margin: 10px 0 30px;
+}
+
+.use-button {
+    background-color: lightblue;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.use-button:hover {
+    background-color: deepskyblue;
+}
+
+/* Slide-up animation */
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Flash red animation for icon */
+@keyframes flashRed {
+    0%, 100% {
+        filter: none;
+    }
+    50% {
+        filter: hue-rotate(-50deg) brightness(1.2);
+    }
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    background-color: lightblue;
+    padding: 10px;
+    width: 100%;
+    font-weight: 800;
+    margin-top: auto;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 24px;
+    }
+    p {
+        font-size: 16px;
+    }
+    .container {
+        padding: 30px 15px;
+    }
+    .navbar img {
+        width: 80px;
+    }
+}
+
+        /* Updated cookies banner animation */
+.cookies-consent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-family: 'Montserrat', sans-serif;
+    display: none;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 1s ease forwards;
+}
+
+.cookies-content {
+    display: inline-block;
+}
+
+.accept-btn {
+    background-color: lightblue;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+}
